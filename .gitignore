@@ -1,0 +1,11 @@
+/**/*shell*
+/**/#*#
+/**/.#*
+/**/*~
+/**/node_modules
+/**/npm-debug.log
+/**/foo*.txt
+/**/foo*.js
+/**/foo*.json
+/**/TAGS
+/**/out*
