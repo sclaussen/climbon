@@ -1,0 +1,1101 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Climb On IO APIs",
+    "version": "1.0.0",
+    "description": "The /v1 set of APIs for the Climb On service.",
+    "termsOfService": "The Terms of Service for the API are ...",
+    "contact": {
+      "name": "Shane Claussen",
+      "url": "http://developer.acme.com/contacturl",
+      "email": "sclaussen@yahoo.com"
+    },
+    "license": {
+      "name": "License Name Goes Here...",
+      "url": "http://developer.acme.com/licenseurl"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "host": "localhost:5000",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Create User",
+        "description": "Create User",
+        "tags": [
+          "Users"
+        ],
+        "x-urlTemplate": "/users/{user}",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "User to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful create",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Users",
+        "description": "List Users",
+        "operationId": "list",
+        "tags": [
+          "Users"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "What element to start the list at, default is 0",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Total number of items to return, default is 10",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserList"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user}": {
+      "get": {
+        "summary": "Get User",
+        "description": "Get User",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Return a subset of the fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update User",
+        "description": "Update User",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "User to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete User",
+        "description": "Delete User",
+        "operationId": "del",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful delete"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/locations": {
+      "post": {
+        "x-bhendi-controller": "../climbonio/routes/location.js",
+        "x-bhendi-controller-class": "Location",
+        "summary": "Create Location",
+        "description": "Create Location",
+        "tags": [
+          "Locations"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "x-urlTemplate": "/locations/{location}",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Location to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LocationCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful create",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "x-bhendi-controller": "../climbonio/routes/location.js",
+        "x-bhendi-controller-class": "Location",
+        "summary": "List Locations",
+        "description": "List Locations",
+        "operationId": "list",
+        "tags": [
+          "Locations"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "What element to start the list at, default is 0",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Total number of items to return, default is 10",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LocationList"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/locations/{location}": {
+      "get": {
+        "summary": "Retrieve Location",
+        "description": "Retrieve Location",
+        "tags": [
+          "Locations"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Return a subset of the response fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Location",
+        "description": "Update Location",
+        "tags": [
+          "Locations"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Location to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LocationUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Location",
+        "description": "Delete Location",
+        "operationId": "del",
+        "tags": [
+          "Locations"
+        ],
+        "x-resource": "location",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Location id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful delete"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/locations/{location}/routes": {
+      "post": {
+        "summary": "Create Route",
+        "description": "Create Route",
+        "tags": [
+          "Routes"
+        ],
+        "x-resource": "route",
+        "x-permissions": null,
+        "x-urlTemplate": "/routes/{route}",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Route id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Route to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RouteCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful create",
+            "schema": {
+              "$ref": "#/definitions/Route"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Routes",
+        "description": "List Routes",
+        "operationId": "list",
+        "tags": [
+          "Routes"
+        ],
+        "x-resource": "route",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Route id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "What element to start the list at, default is 0",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Total number of items to return, default is 10",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RouteList"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/routes/{route}": {
+      "get": {
+        "summary": "Retrieve the Route",
+        "description": "Retrieve the Route",
+        "tags": [
+          "Routes"
+        ],
+        "x-resource": "route",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "route",
+            "in": "path",
+            "description": "Route id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Return a subset of the fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Route"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Route",
+        "description": "Update Route",
+        "tags": [
+          "Routes"
+        ],
+        "x-resource": "route",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "route",
+            "in": "path",
+            "description": "Route id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Route to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RouteUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Route"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Route",
+        "description": "Delete Route",
+        "operationId": "del",
+        "tags": [
+          "Routes"
+        ],
+        "x-resource": "route",
+        "x-permissions": null,
+        "parameters": [
+          {
+            "name": "route",
+            "in": "path",
+            "description": "Route id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful delete"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/debug": {
+      "get": {
+        "summary": "Retrieve Debug",
+        "description": "Retrieve Debug",
+        "operationId": "debug",
+        "tags": [
+          "Debug"
+        ],
+        "x-resource": "slash",
+        "x-permissions": null,
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Debug"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "system",
+            "temporary",
+            "pending",
+            "archived",
+            "blocked",
+            "activated"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "url_hierarchy": {
+          "type": "string"
+        },
+        "route": {
+          "type": "object"
+        }
+      }
+    },
+    "UserCreate": {
+      "title": "User create object",
+      "description": "Used to create a new user",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "UserUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "UserList": {
+      "properties": {
+        "total_results": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "url_hierarchy": {
+                "type": "string"
+              },
+              "route": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "url_hierarchy": {
+          "type": "string"
+        },
+        "route": {
+          "type": "object"
+        }
+      }
+    },
+    "LocationCreate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "LocationUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "LocationList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_results": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "modified_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "url_hierarchy": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "object"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Route": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "pitches": {
+          "type": "integer"
+        },
+        "fa": {
+          "type": "string"
+        },
+        "ffa": {
+          "type": "string"
+        },
+        "ffs": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "url_hierarchy": {
+          "type": "string"
+        },
+        "route": {
+          "type": "object"
+        }
+      }
+    },
+    "RouteCreate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "pitches": {
+          "type": "integer"
+        },
+        "fa": {
+          "type": "string"
+        },
+        "ffa": {
+          "type": "string"
+        },
+        "ffs": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        }
+      }
+    },
+    "RouteUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "pitches": {
+          "type": "integer"
+        },
+        "fa": {
+          "type": "string"
+        },
+        "ffa": {
+          "type": "string"
+        },
+        "ffs": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        }
+      }
+    },
+    "RouteList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_results": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "difficulty": {
+                  "type": "string"
+                },
+                "height": {
+                  "type": "string"
+                },
+                "pitches": {
+                  "type": "integer"
+                },
+                "fa": {
+                  "type": "string"
+                },
+                "ffa": {
+                  "type": "string"
+                },
+                "ffs": {
+                  "type": "string"
+                },
+                "style": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "modified_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "url_hierarchy": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "object"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Debug": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "Error": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": [
+            "string",
+            "array"
+          ]
+        }
+      }
+    }
+  }
+}

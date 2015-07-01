@@ -11,7 +11,15 @@
     "debug": "~2.1.1",
     "express": "~4.12.2",
     "jade": "~1.9.2",
+    "lodash": "^3.10.0",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.1",
+    "gulp-mocha": "^2.1.2",
+    "gulp-nodemon": "^2.0.3",
+    "gulp-util": "^3.0.6"
   }
 }

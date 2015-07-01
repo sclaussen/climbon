@@ -1,0 +1,56 @@
+{
+    "routes": [
+        {
+            "id": "xx",
+            "name": "Munginella",
+            "stars": "3",
+            "difficulty": "5.6",
+            "type": "Multi-pitch Trad",
+            "pitch_count": "3",
+            "height": "350",
+            "overview": "The route name, Munginella, no longer accurately describes this climb. Every pitch features clean cracks and quality climbing. Although this is a first lead for many climbers, the difficulty of this route should not be underestimated.",
+            "strategy": "For some, finding the start is the crux as there is a huge 100-foot-tall right-facing corner to the left of Munginella that suckers in many climbers.  Pitch 2, the crux, requires a few committing face moves with protection below your feet. Use many long slings on this pitch to reduce rope drag. The last pitch is the best but if you need to pass climbers, consider the variation to the right. At the top belay, take extreme care not to send rocks onto climbers below. Retreat with one 60m or two 50m ropes. The first belay has fixed slings for rappelling. Up higher, you will need to leave gear in order to retreat."
+            "protection": "Medium nuts and cams to #3 Camalot"
+            "ffa": "Tom Fender and Vic Tishous, 1966",
+            "approach": {
+                "description": "Walk toward Lower Yosemite Fall for 100 yards looking left for a climbers’ trail marked by a carabiner post. Follow the climbers’ trail marked by three more carabiner posts. The fourth post is within 15 feet of the wall and the start of Munginella. For Commitment and all routes to the right, climb the first 20 feet of the Munginella 3rd class and move way right on a ledge. Another option is, from the last carabiner post, to skirt the base of the wall down a few hundred feet then up.",
+                "length": "20 minutes"
+            },
+            "descent": {
+                "description": "The descent takes about 15 minutes back to the base (no fun in climbing shoes). Walk west and a little down for a few hundred yards on a climbers’ trail until you reach the open slabs area. Continue west across the slabs to a 3rd/4th class descent trail. Consider rappelling this section when wet with one­ 60m rope (or 50m rope by staying a bit to the left at the bottom). Below the slabs, follow the trail east and downward along the base, then slightly back uphill to the last carabiner post at the start of Munginella. Reverse the approach.",
+                "length": "x"
+            },
+            "gps": {
+                "parking_area": "37.74528,-119.59730",
+                "apprach_trailhead": "37.74600,-119.59713",
+                "base", "37.74860,-119.59773",
+                "descent", "37.74907,-119.59837"
+            },
+            "sites": [
+                {
+                    "name": "Supertopo",
+                    "url": "http://www.supertopo.com/rock-climbing/Yosemite-Valley-Five-Open-Books-Munginella"
+                },
+                {
+                    "name": "Mountain Project",
+                    "url": "http://www.mountainproject.com/v/munginella/105867008"
+                },
+                {
+                    "name": "Rock Climbing",
+                    "url": "http://www.rockclimbing.com/routes/North_America/United_States/California/Yosemite_National_Park/Yosemite_Valley/Yosemite_Falls/Five_Open_Books/Munginella_11336.html"
+                }
+            ],
+            "images": [
+                {
+                    "image": "foo.jpg",
+                    "comments": [
+                        {
+                            "author": "Shane Claussen",
+                            "rating": "5"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
