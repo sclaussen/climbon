@@ -3,67 +3,63 @@ var _ = require('lodash');
 var d = require('debug')('climbonio');
 
 var args = process.argv.slice(2);
-console.log('args: ' + args);
-
-var weightClimbRating = {
-    '04': 2,
-    '06': 3,
-    '07': 4,
-    '08': 5,
-    '09': 6,
-    '10a': 8,
-    '10b': 10,
-    '10c': 12,
-    '10d': 15,
-    '11a': 16,
-    '11b': 18,
-    '11c': 20,
-    '11d': 22,
-    '12a': 24,
-    '12b': 26,
-    '12c': 28,
-    '12d': 30
-};
-
-var weightBoulderRating = {
-    'v0': 2,
-    'v1': 4,
-    'v2': 8,
-    'v3': 12,
-    'v4': 15,
-    'v5': 20
-};
-
-var weightClimbType = {
-    'tri': 1,
-    'tric': 1,
-    'sli': 2,
-    'slic': 2,
-    'tro': 2,
-    'tlo': 6,
-    'tfo': 3,
-    'slo': 6,
-    'sfo': 3, 
-    'fso': 6
-};
-
+d('args: ' + args);
 
 var profile = {
     defaultClimber: 'sc',
     defaultLocation: 'pgb',
     defaultIndoorOrOutdoor: 'i',
-    defaultClimbType: 'tr'
+    defaultType: 'tr',
+    climbTypeWeight: {
+        'tri': 1,
+        'tric': 1,
+        'sli': 2,
+        'slic': 2,
+        'tro': 2,
+        'tlo': 6,
+        'tfo': 3,
+        'slo': 6,
+        'sfo': 3, 
+        'fso': 6
+    },
+    climbRatingWeight: {
+        '04': 2,
+        '06': 3,
+        '07': 4,
+        '08': 5,
+        '09': 6,
+        '10a': 8,
+        '10b': 10,
+        '10c': 12,
+        '10d': 15,
+        '11a': 16,
+        '11b': 18,
+        '11c': 20,
+        '11d': 22,
+        '12a': 24,
+        '12b': 26,
+        '12c': 28,
+        '12d': 30
+    },
+    boulderRatingWeight: {
+        'v0': 2,
+        'v1': 4,
+        'v2': 8,
+        'v3': 12,
+        'v4': 15,
+        'v5': 20
+    }
 };
 
 var climber = profile.defaultClimber;
 var location = profile.defaultLocation;
 var indoorOrOutdoor = profile.defaultIndoorOrOutdoor;
-var defaultClimbType = profile.defaultClimbType;
+var defaultType = profile.defaultType;
 
-console.log('climber: ' + climber);
-console.log('location: ' + location);
-console.log('indoorOrOutdoor: ' + indoorOrOutdoor);
-console.log('defaultClimbType: ' + defaultClimbType);
+d('climber: ' + climber);
+d('location: ' + location);
+d('indoorOrOutdoor: ' + indoorOrOutdoor);
+d('defaultType: ' + defaultType);
 
 
 
@@ -74,58 +70,58 @@ if (date.isValid() === false) {
     process.exit(1);
 }
 date = date.format('YYYY-MM-DD');
-console.log('date: ' + date);
+d('date: ' + date);
 
 
 
 var workouts = {};
-var inSummary = false;
-var summary = '';
+var inDescription = false;
+var description = '';
 _.each(args.slice(1), function(token) {
 
-    console.log('\ntoken: ' + token);
+    d('\ntoken: ' + token);
 
-    if (inSummary) {
-        summary += token + ' ';
+    if (inDescription) {
+        description += token + ' ';
         return;
     }
 
     switch (token) {
         
     case '--':
-        inSummary = true;
+        inDescription = true;
         return;
 
     case 'sc':
     case 'cl':
         climber = token;
-        console.log('climber: ' + climber);
+        d('climber: ' + climber);
         return;
 
     case 's':
     case 'sl':
-        defaultClimbType = 'sl';
-        console.log('defaultClimbType: ' + defaultClimbType);
+        defaultType = 'sl';
+        d('defaultType: ' + defaultType);
         return;
     case 'tr':
-        defaultClimbType = 'tr';
-        console.log('defaultClimbType: ' + defaultClimbType);
+        defaultType = 'tr';
+        d('defaultType: ' + defaultType);
         return;
 
     case 'i':
         indoorOrOutdoor = 'i';
-        console.log('indoorOrOutdoor: ' + indoorOrOutdoor);
+        d('indoorOrOutdoor: ' + indoorOrOutdoor);
         return;
     case 'o':
         indoorOrOutdoor = 'o';
-        console.log('indoorOrOutdoor: ' + indoorOrOutdoor);
+        d('indoorOrOutdoor: ' + indoorOrOutdoor);
         return;
 
     case 'pgb':
     case 'pgsf':
     case 'pgsv':
         location = token;
-        console.log('location: ' + location);
+        d('location: ' + location);
         return;
 
     case 'donner':
@@ -133,9 +129,9 @@ _.each(args.slice(1), function(token) {
     case 'tuo':
     case 'tahoe':
         location = token;
-        console.log('location: ' + location);
+        d('location: ' + location);
         indoorOrOutdoor = 'o';
-        console.log('indoorOrOutdoor: ' + indoorOrOutdoor);
+        d('indoorOrOutdoor: ' + indoorOrOutdoor);
         return;
     }
 
@@ -192,13 +188,13 @@ _.each(args.slice(1), function(token) {
         if (indexOfDot > -1) {
             fraction = multiplier.substring(indexOfDot);
             multiplier = multiplier.substring(0, indexOfDot);
-            console.log('climb: ' + climb);
-            console.log('multiplier: ' + multiplier);
-            console.log('fraction: ' + fraction);
+            d('climb: ' + climb);
+            d('multiplier: ' + multiplier);
+            d('fraction: ' + fraction);
         }
         else {
-            console.log('climb: ' + climb);
-            console.log('multiplier: ' + multiplier);
+            d('climb: ' + climb);
+            d('multiplier: ' + multiplier);
         }
         token = climb;
     }
@@ -208,9 +204,9 @@ _.each(args.slice(1), function(token) {
             var climb = token.substring(0, indexOfDot);
             multiplier = '0';
             fraction = token.substring(indexOfDot);
-            console.log('climb: ' + climb);
-            // console.log('multiplier: ' + multiplier);
-            console.log('fraction: ' + fraction);
+            d('climb: ' + climb);
+            // d('multiplier: ' + multiplier);
+            d('fraction: ' + fraction);
             token = climb;
         }
     }
@@ -237,10 +233,11 @@ _.each(args.slice(1), function(token) {
     case '12d':
 
         // Find and/or set climb metadata
-        // - climbType: tr, sl, sfo, tl, tf, fs
+        // - type: tr, sl, sfo, tl, tf, fs
         // - indoorOrOutdoor: 'i', 'o'
         // - crack: '', 'c'
-        var climbType = defaultClimbType;
+        rating = rating.trim();
+        var type = defaultType;
         var crack = '';
 
         // Split the rating from the metadata
@@ -253,49 +250,49 @@ _.each(args.slice(1), function(token) {
             crack = 'c';
             break;
         case 'tr':
-            climbType = 'tr';
+            type = 'tr';
             break;
         case 'trc':
-            climbType = 'tr';
+            type = 'tr';
             crack = 'c';
             break;
         case 's':
         case 'sl':
-            climbType = 'sl';
+            type = 'sl';
             break;
         case 'sc':
         case 'slc':
-            climbType = 'sl';
+            type = 'sl';
             crack = 'c';
             break;
         case 'sf':
-            climbType = 'sf';
+            type = 'sf';
             break;
         case 'tl':
-            climbType = 'tl';
+            type = 'tl';
             break;
         case 'tf':
-            climbType = 'tf';
+            type = 'tf';
             break;
         case 'fs':
-            climbType = 'fs';
+            type = 'fs';
             break;
         default:
             console.error('Error: Unknown metadata for the climb: ' + metadata);
             process.exit(1);
         }
 
-        console.log(rating + ' ' + climbType + indoorOrOutdoor + crack);
+        d(rating + ' ' + type + indoorOrOutdoor + crack);
 
         switch (indoorOrOutdoor) {
         case 'i':
-            switch (climbType) {
+            switch (type) {
             case 'tr':
             case 'sl':
                 // Valid types (tr & sl)
                 break;
             default:
-                console.error('Error: Indoor climb types must be either tr or sl (climbType: ' + climbType + ').');
+                console.error('Error: Indoor climb types must be either tr or sl (type: ' + type + ').');
                 process.exit(1);
             }
             break;
@@ -314,7 +311,8 @@ _.each(args.slice(1), function(token) {
             workouts[climber].climber = climber;
             workouts[climber].date = '';
             workouts[climber].location = '';
-            workouts[climber].summary = '';
+            workouts[climber].description = '';
+            workouts[climber].raw = [];
         }
 
         // Lazily create climbs for the climber's session if none exixts
@@ -323,20 +321,22 @@ _.each(args.slice(1), function(token) {
         }
 
         for (i = 0; i < multiplier; i++) {
-            if (workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack] === undefined) {
-                workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack] = 1;
+            if (workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack] === undefined) {
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack] = {};
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack].count = 1;
             }
             else {
-                workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack]++;
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack].count++;
             }
         }
 
         if (fraction) {
-            if (workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack] === undefined) {
-                workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack] = 0.5;
+            if (workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack] === undefined) {
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack] = {};
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack].count = 0.5;
             }
             else {
-                workouts[climber].climbs[rating + ' ' + climbType + indoorOrOutdoor + crack] += 0.5;
+                workouts[climber].climbs[rating + ' ' + type + indoorOrOutdoor + crack].count += 0.5;
             }
         }
         break;
@@ -348,13 +348,15 @@ _.each(args.slice(1), function(token) {
     case 'v4 ':
     case 'v5 ':
 
+        rating = rating.trim();
+
         // Lazily create the climber session if one doesn't already exist
         if (workouts[climber] === undefined) {
             workouts[climber] = {};
             workouts[climber].climber = climber;
             workouts[climber].date = '';
             workouts[climber].location = '';
-            workouts[climber].summary = '';
+            workouts[climber].description = '';
         }
 
         // Lazily create boulders for the climber's session if none exixts
@@ -364,15 +366,22 @@ _.each(args.slice(1), function(token) {
 
         for (i = 0; i < multiplier; i++) {
             if (workouts[climber].boulders[rating] === undefined) {
-                workouts[climber].boulders[rating] = 1;
+                workouts[climber].boulders[rating] = {};
+                workouts[climber].boulders[rating].count = 1;
             }
             else {
-                workouts[climber].boulders[rating]++;
+                workouts[climber].boulders[rating].count++;
             }
         }
         
         if (fraction) {
-            workouts[climber].boulders[rating] += .5;
+            if (workouts[climber].boulders[rating] === undefined) {
+                workouts[climber].boulders[rating] = {};
+                workouts[climber].boulders[rating].count = .5;
+            }
+            else {
+                workouts[climber].boulders[rating].count += .5;
+            }
         }
         break;
 
@@ -384,17 +393,26 @@ _.each(args.slice(1), function(token) {
 
 // Add the date, location, and summary into each climber's climbing session,
 // and sort the climbs based on rating
-console.log('args: ' + args);
+d('args: ' + args);
 _.each(workouts, function(workout) {
+
     if (date) {
         workout.date = date;
     }
+
     if (location) {
         workout.location = location;
     }
-    if (summary) {
-        workout.summary = summary.trim();
+
+    if (description) {
+        workout.description = description.trim();
     }
+
+    workout.raw = args;
+
+    var climbs = 0;
+    var boulders = 0;
+    var score = 0;
 
     if (workout.climbs) {
         var orderedClimbs = {};
@@ -402,6 +420,15 @@ _.each(workouts, function(workout) {
             orderedClimbs[key] = workout.climbs[key];
         });
         workout.climbs = orderedClimbs;
+
+        _.each(_.keys(workout.climbs), function(rating) {
+            var s = rating.split(/[ ]+/);
+            workout.climbs[rating].rating_multiplier = profile.climbRatingWeight[s[0]];
+            workout.climbs[rating].type_multiplier = profile.climbTypeWeight[s[1]];
+            workout.climbs[rating].score = profile.climbRatingWeight[s[0]] * profile.climbTypeWeight[s[1]] * parseInt(workout.climbs[rating].count);
+            climbs += parseInt(workout.climbs[rating].count);
+            score += workout.climbs[rating].score;
+        });
     }
     
     if (workout.boulders) {
@@ -410,79 +437,27 @@ _.each(workouts, function(workout) {
             orderedBoulders[key] = workout.boulders[key];
         });
         workout.boulders = orderedBoulders;
+
+        _.each(_.keys(workout.boulders), function(rating) {
+            workout.boulders[rating].rating_multiplier = profile.boulderRatingWeight[rating];
+            workout.boulders[rating].score = profile.boulderRatingWeight[rating] * parseInt(workout.boulders[rating].count);
+            boulders += parseInt(workout.boulders[rating].count);
+            score += workout.boulders[rating].score;
+        });
     }
 
-    console.log('Workout for ' + workout.climber + ': ' + JSON.stringify(workout, null, 4));
+    workout.summary = {};
+    if (climbs > 0) {
+        workout.summary.climbs = climbs;
+    }
+    if (boulders > 0) {
+        workout.summary.boulders = boulders;
+    }
+    workout.summary.score = score;
+
+    console.log(JSON.stringify(workout, null, 4));
 });
 
 function insert(str, index, value) {
     return str.substr(0, index) + value + str.substr(index);
 }
-
-// Routes 2015
-// node addClimb 3/7 yv goblet 5.6 cl first yv climb 5.1 unnamed crack swan slab; I climbed swan 5.8 tr
-// node addClimb 1/1  9 9tr 9c 9trc 9s 9sl 9sc 9slc o 9 9tr 9s 9sl 9sf 9tl 9tf 9fs i 10c 10ctr 10cc 10ctrc 10cs 10csl 10csc 10cslc o 10c 10ctr 10cs 10csl 10csf 10ctl 10ctf 10cfs -- positive test
-// node addClimb 11/1 pgb bx2
-// node addClimb 10/7 pgb 8x2 d a
-// node addClimb 9/13 pgb 11c 9 6 cl 6x3
-// node addClimb 7/30 pgb
-// node addClimb 7/20 pgb 11cx2 11bx2 ax2 9 -- Shyam
-// node addClimb 7/19 pgb cl 4x2 sc 9 11c 11c 11c 11a 8 9 11b
-// node addClimb 7/17 pgb d a b a 11c 11a
-// node addClimb 7/7 pgb 11c 11c 8 b 11bx3 b
-// node addClimb 7/5 pgb 7 8 9 8 9 7 6 6 8 6 7 8 9 7 8 9 4 8 9 7 9 8 7 7 9 9 8 8 9 9 6 cl 4x2 -- 'climbed everything > 4< a'
-// node addClimb 6/30 pgb 11d dx3.5 v2 -- My very first 11d clean
-// node addClimb 6/28 pgb 11bx3 d c 8 9 11a 11b a.5 d
-// node addClimb 6/25 pgb v0 11d 11a 12a 11a 11b 11b 11c 11b
-// node addClimb 6/23 pgb d.5 d 7 b 8 11b 8 d
-// node addClimb 6/21 pgb 11d 11a 11b 11b 11a 11b 11a 11b 11c 12a b
-// node addClimb 6/18 pgb 11b a 8 9 7 b 11d b 11a c a
-// node addClimb 6/16 pgb 11bx2 b 8 9 d 11b a
-// node addClimb 6/11 pgb 11c 11a a 11d 11a a c 11b b
-// node addClimb 6/1 pgb 11c 11a 11a 9 7 6 11b 12a 8
-// node addClimb 5/31 donner o cl 4x2
-// node addClimb 5/25 pgb d v2 11b d 11b 8 11c 8 c ax2 7 c -- Peter Weller joined
-// node addClimb 5/23 pgb 11a 6 7 9 6 11a c 6 7 8 c b a 9 6 11b d b 7 cl 5.6x.5 5.6x.5 -- Caden quitting half way up still
-// node addClimb 5/21 pgb 11cs 9s bs 12a 11a 11b a 8 9 c -- with Peter Weller
-// node addClimb 5/19 pgb as 9s csx2 11cs bs 9sx2 8x2
-// node addClimb 5/17 pgb 11cs 9s 12a 11c 11bx3 c b a c cl 6.5 7.5 4x7 -- 'cleaned 11cs lead; asea climbed with Caden'
-// node addClimb 5/15 pgb -- sent from yahoo ipad
-// node addClimb 5/11 pgb 9 c 9 b 11a c 11c d
-// node addClimb 5/10 pgb 12a 11c 11a b 9s 11as cl 5.4x2 -- 11as onsite
-// node addClimb 5/7 pgb 9s 11bs cs as 12a 11c bs 11b 11a 8
-// node addClimb 5/5 pgb 9sx2 as ds 11ax2
-// node addClimb 5/3 pgb 9s 11bs bs 8s as ds 9x2 a b c cl 5.4 -- lead fall on d
-// node addClimb 4/30 pgb 9 b 12a.5 b cx2
-// node addClimb 4/28 pgb v2x2 c b 11b.5 11a a b c 8 7 a 9
-// node addClimb 4/26 pgb cl 4.5 7.5 sc d 7 11b c b 8 11a b 11a a -- Caden quitting halfway up but boulders
-// node addClimb 4/24 pgb cl 6 4x2 sc 11a b d 11b c 8 b 11b 11b b 7 11b
-// node addClimb 4/21 pgb a 9 11a 11b cx1.5 b b 11a 8 11a
-// node addClimb 4/19 pgb cl 4x3 6 sc c a 7 11bx1.5 c c a d 9 8 11b
-// node addClimb 4/17 pgb cl 5.6 4x2 sc 11ax3 11b c b 6 9 a bx2 v0 9c
-// node addClimb 4/14 pgb ax2 b 11ax2 d 11a 11b d a c -- 75m
-// node addClimb 4/13 -- 69m
-// node addClimb 4/12 pgb a d 9 d b 11a 11bx2 a 8 6 d b cl 6 4x2
-// node addClimb 4/11 -- first 10k+ day
-// node addClimb 4/10 pgb b a a b d c d d 9 8 -- switched left shoe
-// node addClimb 4/7 pgb v0x2 v1 c d d 9 c c
-// node addClimb 4/6 v1x8 v2 v0
-// node addClimb 4/5 11b 11a d c b 8 a 9 b 8 cl 5.4x3
-// node addClimb 3/31 7 a c c a 9 b 8 6 b cl 4x3
-// node addClimb 2/21 v0x2 v1 v2x2 8x2 b 9 9 9 b 11b c 11b
-// node addClimb 2/19 v0x2 bx2 c b cl 5.4
-// node addClimb 2/17 9 7 d c 7 8 a b 11a 11a b
-// node addClimb 2/13 cl 5.4x4 sc b 11ax2 d a 7 8 a b a
-// node addClimb 2/7 cl 5.4 sc 11a a
-// node addClimb 2/6 a c 11b d 7 a d 9
-// node addClimb 2/3 11a b 11a 11a d a d a b
-// node addClimb 1/25 cl 5.5x3 5.4x2 sc cs 11a c d
-// node addClimb 1/22 csx2 9s b a cl 5.6 5.4x4
-// node addClimb 1/20 9s cs bs as 11a 11b b d 11d 9c
-// node addClimb 1/17 8 11ax3 c 9 b 9 cl 5.4x3 5.6x1.5
-// node addClimb 1/15 c d 11a ax2 d b cl 5.4x11 5.6x2
-// node addClimb 11/13 b 9 9 12a.5 11b cl 5.6x3 5.4 -- Cadens first time to top of middle wall pgb
-// node addClimb 1/3 9 b a c d a 8 9 c 6 c d a cl 5.6x6
-// node addClimb 1/4 8 a b 9 c cl 5.4x2
-// node addClimb 11/6 c d 11a b d b 11a cl 5.4x3 5.5x2
-// node addClimb 1/8 12a 9 c cl 5.4x2 5.6 -- first 12 but not clean
-// node addClimb 1/11 c d 12a 11a c 9 11b.5 c d a cl 5.6x3 5.4x3
