@@ -1,0 +1,31 @@
+node addClimb 1/21/2016 pgb 9sx2 11a
+node addClimb 1/24/2016 d a 9sx2 d 8s
+node addClimb 1/27/2016 s 9 8 9 tr a b d
+node addClimb 1/29/2016 s 10a d 10a b tr a
+node addClimb 2/3/2016 s b 9 a 9 tr dx3
+node addClimb 2/5/2016 d a B b
+node addClimb 2/7/2016 s 9 a b tr .5c d 8 6 B a d 8 11b tr
+node addClimb 2/9/2016 s a tr 11c 8 a b 9 d
+node addClimb 2/12/2016 bx3 11c d d a
+node addClimb 2/28/2016 b a b cl 4x2.5 4
+node addClimb 2/13/2016 ax3
+node addClimb 2/17/2016 11a ax2 9 9 a a b
+node addClimb 2/20/2016 9 9 a 9 b a c b 9 a 11a
+node addClimb 3/23/2016 a 8 11a 9 7 6 c 11c 9 b 9 a
+node addClimb 3/27/2016 a 8 c 6 b 7 c 9 11c 11a 7 9 11a c b a --  cl tons of boulders
+node addClimb 3/29/2016 a 11c 8 d 11a c a 8 c 6 9 11a 7
+node addClimb 3/31/2016 a c 11a 9 8 7 6 11c a d 11a c a b 8 9 b a 9 7
+node addClimb 4/5/2016 a b 11b 11ax3 c a 9 8 7 6
+node addClimb 4/7/2016 11a 11c c c -- Caden was tired from Spurs game
+node addClimb 4/10/2016 c a c 11a 9 7 8 6 11b 9 c 11a 11c 9 b a
+node addClimb 4/19/2016 a 8 11c 11a d 9 a
+node addClimb 5/3/2016 pgb 11b d b
+node addClimb 5/5/2016 pgb 9s 11c 11b b
+node addClimb 5/8/2016 pgb 9s 11b cs v1 11a 11b b 11a 11b
+node addClimb 5/10/2016 pgb 9s 12a 11b 7 6 8 a 9 c 11a d 10a
+node addClimb 5/12/2016 pgb cs a 8 c 9 7 6 11a 8s 11c 9c
+node addClimb 5/17/2016 pgb v0 v1 v2 s 9 d 11a tr 11c 9cx2
+node addClimb 5/19/2016 pgb 9x2 11a 7 11a 8 b a 8 c 6 9 11a 7 -- cl boulder traversing
+node addClimb 5/24/2016 pgb 11a 11b 11c 11b 12a 9s
+node addClimb 5/26/2016 pgb cs 12a 11bx2 11c v2 v1 c 9
+node addClimb 5/29/2016 pgsf 11c v3 9s 10cc 11b 11a as b d -- cl bouldering

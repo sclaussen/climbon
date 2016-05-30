@@ -48,6 +48,20 @@ var profile = {
         'v3': 12,
         'v4': 15,
         'v5': 20
+    },
+    climbingLocations: {
+        'yv': { 'name': 'Yosemite Valley', 'location': 'outdoor' },
+        'tuo': { 'name': 'Tuolumne', 'location': 'outdoor' },
+        'pin': { 'name': 'Pinnacles', 'location': 'outdoor' },
+        'donner': { 'name': 'Donner Pass', 'location': 'outdoor' },
+        'tahoe': { 'name': 'Lake Tahoe', 'location': 'outdoor' },
+        'pgb': { 'name': 'Planet Granite Belmont', 'location': 'indoor' },
+        'pgsv': { 'name': 'Planet Granite Sunnyvale', 'location': 'indoor' },
+        'pgsf': { 'name': 'Planet Granite San Francisco', 'location': 'indoor' }
+    },
+    climbers: {
+        'sc': { 'name': 'Shane Claussen' },
+        'cl': { 'name': 'Caden Claussen' }
     }
 };
 
@@ -74,6 +88,19 @@ d('date: ' + date);
 
 
 
+// What is handled:
+// (a) -- comment
+// (b) update default climber: climber initials
+// (c) update default climb type: tr (top rope), s/sl (sport lead)
+// (d) update default location: i (indoor), o (outdoor)
+// (e) update default location: location name
+// (f) normalize the climb rating per the following patterns:
+//     a -> 10a, 5.4 -> '04 ', 4 -> '04 ', v0 -> 'v0 '
+// (g) Set multipler/fraction for 10ax2, 10ax2.5, 10ax.5 patterns
+// (h) Set all the metadata for the current climbing entry:
+//     type: tr, sl, sfo, tl, tf, fs
+//     indoorOrOutdoor: 'i', 'o'
+//     crack: '', 'c'
 var workouts = {};
 var inDescription = false;
 var description = '';
@@ -410,24 +437,140 @@ _.each(workouts, function(workout) {
 
     workout.raw = args;
 
-    var climbs = 0;
-    var boulders = 0;
-    var score = 0;
+
+    // Set up the summary in a specific order
+    workout.summary = {};
+    if (workout.boulders) {
+        workout.summary.bouldersByRating = {};
+        workout.summary.bouldersScoresByRating = {};
+    }
+    if (workout.climbs) {
+        workout.summary.climbsByRating = {};
+        workout.summary.climbsScoresByRating = {};
+        workout.summary.climbsByRatingGroup = {};
+        workout.summary.climbsScoresByRatingGroup = {};
+        workout.summary.climbsByType = {};
+        workout.summary.climbsScoresByType = {};
+    }
+    if (workout.boulders) {
+        workout.summary.boulders = 0;
+    }
+    if (workout.climbs) {
+        workout.summary.climbs = 0;
+        workout.summary.climbsScore = 0;
+    }
+    if (workout.boulders) {
+        workout.summary.bouldersScore = 0;
+    }
+    workout.summary.score = 0;
+
 
     if (workout.climbs) {
+
+        // Order the climbs
         var orderedClimbs = {};
         Object.keys(workout.climbs).sort().forEach(function(key) {
             orderedClimbs[key] = workout.climbs[key];
         });
         workout.climbs = orderedClimbs;
 
-        _.each(_.keys(workout.climbs), function(rating) {
-            var s = rating.split(/[ ]+/);
-            workout.climbs[rating].rating_multiplier = profile.climbRatingWeight[s[0]];
-            workout.climbs[rating].type_multiplier = profile.climbTypeWeight[s[1]];
-            workout.climbs[rating].score = profile.climbRatingWeight[s[0]] * profile.climbTypeWeight[s[1]] * parseInt(workout.climbs[rating].count);
-            climbs += parseInt(workout.climbs[rating].count);
-            score += workout.climbs[rating].score;
+        _.each(_.keys(workout.climbs), function(climb) {
+
+            var climbArray = climb.split(/[ ]+/);
+            var rating = climbArray[0];
+            var type = climbArray[1];
+            var count = parseInt(workout.climbs[climb].count);
+
+            // Augment the climb that already contains count with type and rating multiplier and score
+            workout.climbs[climb].type_multiplier = profile.climbTypeWeight[type];
+            workout.climbs[climb].rating_multiplier = profile.climbRatingWeight[rating];
+            var score = profile.climbRatingWeight[rating] * profile.climbTypeWeight[type] * count;
+            workout.climbs[climb].score = score;
+            
+            // Increment workout total climb count and score
+            workout.summary.climbs += count;
+            workout.summary.climbsScore += score;
+            workout.summary.score += score;
+
+            // Update the climb type summary (e.g. tri, sli, ...)
+            if (workout.summary.climbsByType[type] === undefined) {
+                workout.summary.climbsByType[type] = count;
+                workout.summary.climbsScoresByType[type] = score;
+            }
+            else {
+                workout.summary.climbsByType[type] += count;
+                workout.summary.climbsScoresByType[type] += score;
+            }
+
+            // Update the climb rating summary (e.g. 09, 10a, ...)
+            if (workout.summary.climbsByRating[rating] === undefined) {
+                workout.summary.climbsByRating[rating] = count;
+                workout.summary.climbsScoresByRating[rating] = score;
+            }
+            else {
+                workout.summary.climbsByRating[rating] += count;
+                workout.summary.climbsScoresByRating[rating] += score;
+            }
+
+            // Update the climb rating group summary (e.g. <10s, 10s, 11s, 12s)
+            switch (rating) {
+            case '04':
+            case '06':
+            case '07':
+            case '08':
+            case '09':
+                if (workout.summary.climbsByRatingGroup['<10s'] === undefined) {
+                    workout.summary.climbsByRatingGroup['<10s'] = count;
+                    workout.summary.climbsScoresByRatingGroup['<10s'] = score;
+                }
+                else {
+                    workout.summary.climbsByRatingGroup['<10s'] += count;
+                    workout.summary.climbsScoresByRatingGroup['<10s'] += score;
+                }
+                break;
+
+            case '10a':
+            case '10b':
+            case '10c':
+            case '10d':
+                if (workout.summary.climbsByRatingGroup['10s'] === undefined) {
+                    workout.summary.climbsByRatingGroup['10s'] = count;
+                    workout.summary.climbsScoresByRatingGroup['10s'] = score;
+                }
+                else {
+                    workout.summary.climbsByRatingGroup['10s'] += count;
+                    workout.summary.climbsScoresByRatingGroup['10s'] += score;
+                }
+                break;
+
+            case '11a':
+            case '11b':
+            case '11c':
+            case '11d':
+                if (workout.summary.climbsByRatingGroup['11s'] === undefined) {
+                    workout.summary.climbsByRatingGroup['11s'] = count;
+                    workout.summary.climbsScoresByRatingGroup['11s'] = score;
+                }
+                else {
+                    workout.summary.climbsByRatingGroup['11s'] += count;
+                    workout.summary.climbsScoresByRatingGroup['11s'] += score;
+                }
+                break;
+
+            case '12a':
+            case '12b':
+            case '12c':
+            case '12d':
+                if (workout.summary.climbsByRatingGroup['12s'] === undefined) {
+                    workout.summary.climbsByRatingGroup['12s'] = count;
+                    workout.summary.climbsScoresByRatingGroup['12s'] = score;
+                }
+                else {
+                    workout.summary.climbsByRatingGroup['12s'] += count;
+                    workout.summary.climbsScoresByRatingGroup['12s'] += score;
+                }
+                break;
+            }
         });
     }
     
@@ -439,21 +582,27 @@ _.each(workouts, function(workout) {
         workout.boulders = orderedBoulders;
 
         _.each(_.keys(workout.boulders), function(rating) {
+
+            var count = workout.boulders[rating].count;
             workout.boulders[rating].rating_multiplier = profile.boulderRatingWeight[rating];
-            workout.boulders[rating].score = profile.boulderRatingWeight[rating] * parseInt(workout.boulders[rating].count);
-            boulders += parseInt(workout.boulders[rating].count);
-            score += workout.boulders[rating].score;
+            var score = profile.boulderRatingWeight[rating] * parseInt(workout.boulders[rating].count);
+            workout.boulders[rating].score = score;
+
+            // Update the boulder rating summary (e.g. v0, v1, ...)
+            if (workout.summary.bouldersByRating[rating] === undefined) {
+                workout.summary.bouldersByRating[rating] = count;
+                workout.summary.bouldersScoresByRating[rating] = score;
+            }
+            else {
+                workout.summary.bouldersByRating[rating] += count;
+                workout.summary.bouldersScoresByRating[rating] += score;
+            }
+
+            workout.summary.boulders += count;
+            workout.summary.bouldersScore += score;
+            workout.summary.score += workout.boulders[rating].score;
         });
     }
-
-    workout.summary = {};
-    if (climbs > 0) {
-        workout.summary.climbs = climbs;
-    }
-    if (boulders > 0) {
-        workout.summary.boulders = boulders;
-    }
-    workout.summary.score = score;
 
     console.log(JSON.stringify(workout, null, 4));
 });
